@@ -1,50 +1,61 @@
-html {
-  display: table;
-  margin: auto;
-}
+/* * {
+  box-sizing: border-box;
+} */
 
 body {
-  display: table-cell;
-  vertical-align: middle;
-  padding: 0px;
   margin: 0px;
-  max-width: 1200px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: #4c4c47;
-  height: 100%;
+  color: #313638;
 }
 svg {
-  padding: 10px 10px 10px 25px;
+  padding: 0px 0px 0px 25px;
 }
-.header-bar {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  background-color: #c14953;
+
+header {
+  background-color: #f06543;
   border-style: solid;
-  border-color: #4c4c47;
+  border-color: #313638;
   border-width: 0.5px;
-  padding: 10px;
+  text-align: center;
 }
 
 h1 {
-  margin: 0px;
-  color: #2d2d2a;
+  color: #313638;
 }
 
-.container {
+#main {
   display: flex;
-  flex-direction: row;
-  max-width: 1200px;
+  min-height: calc(100vh - 5vh);
+}
+
+#main > .todo-content {
+  flex: 1;
+}
+#main > .side-bar {
+  flex: 0 0 20vw;
+
+}
+
+#main > .side-bar {
+  order: -1;
+}
+header,
+.todo-content,
+.side-bar {
+  padding: 1em;
+}
+
+header {
+  height: 5vh;
+}
+.todo-content {
 }
 
 .side-bar {
-  width: 200px;
-  height: 94.93vh;
-  background-color: #848fa5;
+  background-color: #e0dfd5;
   font-size: large;
   border-style: solid;
-  border-color: #4c4c47;
+  border-color: #313638;
   border-width: 0 0.5px;
 }
 
@@ -58,12 +69,13 @@ h1 {
 .group-item {
   padding: 10px;
   margin: 10px;
-  color: #2d2d2a;
+  color: #313638;
   font-weight: 600;
 }
 .todo-content {
-  max-width: 1000px;
-  background-color: #e5dcc5;
+  background-color: #e8e9eb;
+  border-width: 0.5px;
+  border-color: #2d2d2a;
 }
 
 .todo-header {
@@ -81,21 +93,107 @@ h1 {
 .todo-item {
   display: flex;
   flex-direction: row;
-  border-bottom: 1px solid #2d2d2a;
+  justify-content: space-between;
+  border-bottom: 1px solid #313638;
   padding: 10px 10px 10px 20px;
   margin: 10px;
 }
 
 .todo-item-title {
-  width: 50vw;
+  text-align: left;
 }
 
 .todo-item-date {
   text-align: right;
-  width: 25vw;
+
 }
 
 .todo-item-group {
   text-align: right;
-  width: 25vw;
+
+}
+
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  background-color: #f06543;
+  color: #2d2d2a;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 25px;
+  width: 180px;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 5px;
+  right: 225px;
+  right: 5px;
+  border: 3px solid #2d2d2a;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.add-task-form {
+  max-width: 400px;
+  padding: 10px;
+  background-color: #e0dfd5;
+}
+
+/* Full-width input fields */
+.add-task-form input[type="text"] {
+  width: 100%;
+  padding: 15px 0px 15px 0px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #e8e9eb;
+  color: #2d2d2a;
+}
+
+/* When the inputs get focus, do something */
+.add-task-form input[type="text"]:focus {
+  background-color: #f1f1f1;
+  outline: none;
+  color: #2d2d2a;
+}
+
+.add-task-form input[type="date"] {
+  width: 100%;
+  padding: 15px 0px 15px 0px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #e8e9eb;
+  color: #2d2d2a;
+}
+
+.add-task-form input[type="radio"] {
+  padding: 15px 0px 15px 0px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #e8e9eb;
+  color: #2d2d2a;
+}
+
+.add-task-form .button {
+  background-color: #f06543;
+  color: #2d2d2a;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 23px;
+  width: 180px;
+}
+
+.add-task-form .button:hover,
+.open-button:hover,
+.close-button:hover {
+  opacity: 1;
 }
