@@ -1,0 +1,28 @@
+{
+  "name": "todo-list",
+  "version": "1.0.0",
+  "description": "A simple todo list",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cheso7/todo-list.git"
+  },
+  "author": "Jarryd Cheso",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cheso7/todo-list/issues"
+  },
+  "homepage": "https://github.com/Cheso7/todo-list#readme",
+  "keywords": [],
+  "devDependencies": {
+    "webpack": "^5.35.1",
+    "webpack-cli": "^4.6.0"
+  },
+  "dependencies": {
+    "date-fns": "^2.21.1"
+  }
+}
