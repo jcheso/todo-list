@@ -6,24 +6,12 @@
     <link rel="stylesheet" href="/src/styles.css" />
   </head>
   <body>
-    <div class="header-bar">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        height="24px"
-        viewBox="0 0 24 24"
-        width="24px"
-        fill="#000000"
-      >
-        <path d="M0 0h24v24H0V0z" fill="none" />
-        <path
-          d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z"
-        />
-      </svg>
+    <header>
       <div class="title">
         <h1>Todo List</h1>
       </div>
-    </div>
-    <div class="container">
+    </header>
+    <div id="main" class="container">
       <div class="side-bar">
         <div class="group-list">
           <div class="group-item">View All</div>
@@ -49,6 +37,66 @@
             <div class="todo-item-date">Example Item 1</div>
             <div class="todo-item-group">Work</div>
           </div>
+          <footer>
+            <div class="form-popup" id="myForm">
+              <form id="add-task-form" class="add-task-form">
+                <label for="task">Task</label>
+                <input type="text" id="task" name="task" required="true" />
+
+                <label for="group">Description</label>
+                <input type="text" id="group" name="group" required="true" />
+
+                <label for="group">Group</label>
+                <input type="text" id="group" name="group" required="true" />
+
+                <label for="dueDate">Due Date</label>
+                <input
+                  type="date"
+                  id="dueDate"
+                  name="dueDate"
+                  required="true"
+                />
+                <div class="radio-buttons">
+                  <div><h4>Priority</h4></div>
+                  <label for="priority"
+                    >High
+                    <input
+                      type="radio"
+                      id="priority"
+                      name="priority"
+                      value="Yes"
+                    />
+                  </label>
+                  <label for="priority"
+                    >Medium
+                    <input
+                      type="radio"
+                      id="priority"
+                      name="priority"
+                      value="No"
+                    />
+                  </label>
+                  <label for="priority"
+                    >Low
+                    <input
+                      type="radio"
+                      id="priority"
+                      name="priority"
+                      value="No"
+                    />
+                  </label>
+                </div>
+
+                <input
+                  id="close-button"
+                  class="button"
+                  type="submit"
+                  value="Add Task"
+                />
+              </form>
+            </div>
+            <button id="open-button" class="open-button">Add Task</button>
+          </footer>
         </div>
       </div>
     </div>

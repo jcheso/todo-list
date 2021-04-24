@@ -1,0 +1,1 @@
+(()=>{"use strict";document.getElementById("close-button").addEventListener("click",(()=>{document.getElementById("myForm").style.display="none"})),document.getElementById("open-button").addEventListener("click",(()=>{document.getElementById("myForm").style.display="block"}))})();
