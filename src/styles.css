@@ -90,6 +90,17 @@ header {
 .todo-list {
 }
 
+.todo-list-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 2px solid #313638;
+  padding: 10px 10px 10px 20px;
+  margin: 10px 10px 30px 10px;
+  font-weight: 600;
+
+}
+
 .todo-item {
   display: flex;
   flex-direction: row;
@@ -97,6 +108,16 @@ header {
   border-bottom: 1px solid #313638;
   padding: 10px 10px 10px 20px;
   margin: 10px;
+}
+
+.todo-item-complete{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid #313638;
+  padding: 10px 10px 10px 20px;
+  margin: 10px;
+  text-decoration: line-through;
 }
 
 .todo-item-title {

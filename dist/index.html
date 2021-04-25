@@ -21,81 +21,91 @@
       </div>
       <div class="todo-content">
         <div class="todo-header">Group Name</div>
-        <div class="todo-list">
-          <div class="todo-item">
-            <div class="todo-item-title">Example Item 1</div>
-            <div class="todo-item-date">22nd April 2021</div>
-            <div class="todo-item-group">Work</div>
+        <div id="todo-list" class="todo-list">
+          <div class="todo-list-header">
+            Mark Complete
+            <div class="todo-item-title">Task</div>
+            <div class="todo-item-date">Due Date</div>
+            <div class="todo-item-group">Group</div>
           </div>
-          <div class="todo-item">
-            <div class="todo-item-title">Example Item 1</div>
-            <div class="todo-item-date">Example Item 1</div>
-            <div class="todo-item-group">Personal</div>
-          </div>
-          <div class="todo-item">
-            <div class="todo-item-title">Example Item 1</div>
-            <div class="todo-item-date">Example Item 1</div>
-            <div class="todo-item-group">Work</div>
-          </div>
+
           <footer>
             <div class="form-popup" id="myForm">
               <form id="add-task-form" class="add-task-form">
                 <label for="task">Task</label>
-                <input type="text" id="task" name="task" required="true" />
+                <input
+                  type="text"
+                  id="task"
+                  name="task"
+                  required="true"
+                  value="Test"
+                />
 
-                <label for="group">Description</label>
-                <input type="text" id="group" name="group" required="true" />
+                <label for="description">Description</label>
+                <input
+                  type="text"
+                  id="description"
+                  name="description"
+                  required="true"
+                  value="Test Description"
+                />
 
                 <label for="group">Group</label>
-                <input type="text" id="group" name="group" required="true" />
+                <input
+                  type="text"
+                  id="group"
+                  name="group"
+                  required="true"
+                  value="Test Group"
+                />
 
-                <label for="dueDate">Due Date</label>
+                <label for="due-date">Due Date</label>
                 <input
                   type="date"
-                  id="dueDate"
-                  name="dueDate"
+                  id="due-date"
+                  name="due-date"
                   required="true"
+                  value="2021-09-21"
                 />
                 <div class="radio-buttons">
                   <div><h4>Priority</h4></div>
-                  <label for="priority"
+                  <label for="priority-high"
                     >High
                     <input
                       type="radio"
-                      id="priority"
+                      id="priority-high"
                       name="priority"
-                      value="Yes"
+                      value="high"
                     />
                   </label>
-                  <label for="priority"
+                  <label for="priority-medium"
                     >Medium
                     <input
                       type="radio"
-                      id="priority"
+                      id="priority-medium"
                       name="priority"
-                      value="No"
+                      value="medium"
                     />
                   </label>
-                  <label for="priority"
+                  <label for="priority-low"
                     >Low
                     <input
                       type="radio"
-                      id="priority"
+                      id="priority-low"
                       name="priority"
-                      value="No"
+                      value="low"
                     />
                   </label>
                 </div>
-
                 <input
-                  id="close-button"
+                  id="close-btn"
                   class="button"
                   type="submit"
                   value="Add Task"
                 />
               </form>
             </div>
-            <button id="open-button" class="open-button">Add Task</button>
+            <button id="open-btn" class="open-button">Add Task</button>
           </footer>
         </div>
       </div>
