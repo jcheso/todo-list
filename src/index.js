@@ -9,7 +9,7 @@ const taskFactory = (task, description, group, dueDate, priority) => {
 //Module to modify the Todo item - create new Todo, setting todo as complete, changing priority
 const taskController = (() => {
   let taskList = [];
-  let projectList = [];
+  let groupList = ["View All", "General"];
 
   const addTask = () => {
     const taskFormData = displayController.getTaskForm(event);
@@ -43,9 +43,62 @@ const taskController = (() => {
   const deleteTask = (event) => {
     const id = event.target.parentElement.parentElement.id;
     taskList.splice(id, 1, "");
-    displayController.deleteTask(id);
+    displayController.deleteElement(id);
   };
-  return { addTask, markTaskComplete, deleteTask };
+
+  const deleteGroup = (event) => {
+    const groupName = event.target.parentElement.parentElement.id;
+    const id = groupList.indexOf(groupName);
+    // Delete the option from the dropdown
+    displayController.deleteElement(groupName);
+    // Delete the group from the array
+    groupList.splice(id, 1, "");
+    // Delete the group from the DOM
+    displayController.deleteElement(groupName);
+    // Check if tasks are under the group, if so delete the tasks
+    taskList.forEach((taskObj, index) => {
+      // For each task, check if the taskList.group = groupName
+      if (taskObj.group == groupName) {
+        taskList.splice(index, 1, "");
+        displayController.deleteElement(index);
+      }
+    });
+  };
+
+  const addGroup = () => {
+    // Get form variables from DOM input function
+    const newGroup = displayController.getGroupForm(event);
+    console.log(newGroup);
+    // Check if existing and add to array
+    if (groupList.includes(newGroup)) {
+      alert("This group already exists");
+    } else {
+      groupList.push(newGroup);
+      displayController.addGroup(newGroup, groupList.length - 1);
+      console.table(groupList);
+    }
+  };
+
+  const displayGroup = () => {
+    const groupName = event.target.parentElement.id;
+
+    displayController.clearTaskDisplay();
+    // If groupName is View all - just display all instead.
+    taskList.forEach((taskObj, index) => {
+      if (taskObj.group == groupName) {
+      displayController.addTask(taskObj, index);
+      }
+    });
+    
+  };
+  return {
+    addTask,
+    markTaskComplete,
+    deleteTask,
+    addGroup,
+    deleteGroup,
+    displayGroup,
+  };
 })();
 
 //Module to handle DOM related stuff - eventListeners, insert new item, delete item, expand a todo, show priority (color)
@@ -76,9 +129,14 @@ const displayController = (() => {
   const initialiseEventListeners = () => {
     document.getElementById("close-btn").addEventListener("click", closeForm);
     document.getElementById("open-btn").addEventListener("click", openForm);
+    document.getElementById("View All").addEventListener("click", taskController.displayGroup);
+    document.getElementById("General").addEventListener("click", taskController.displayGroup);
     document
       .getElementById("add-task-form")
       .addEventListener("submit", taskController.addTask);
+    document
+      .getElementById("new-group-form")
+      .addEventListener("submit", taskController.addGroup);
   };
 
   const addDiv = (className, parentElement, innerHTML) => {
@@ -90,7 +148,7 @@ const displayController = (() => {
 
   //Add new task to DOM
   const addTask = (taskObj, index) => {
-    const todoList = document.getElementById("todo-list");
+    const todoList = document.getElementById("todo-list-content");
 
     const todoItem = document.createElement("div");
     todoItem.setAttribute("class", "todo-item");
@@ -129,20 +187,74 @@ const displayController = (() => {
     }
   };
   // Delete task from DOM
-  const deleteTask = (id) => {
+  const deleteElement = (id) => {
     document.getElementById(id).remove();
   };
 
-  // Add new project to DOM
+  // Add new group to DOM
+  // Collect form data, check if group name already exists.
+  const getGroupForm = (event) => {
+    const newGroup = document.getElementById("new-group").value;
+    event.preventDefault();
+    return newGroup;
+  };
+  // Add the group to the select DOM, add the group to the side bar DOM
+  const addGroup = (newGroup, index) => {
+    const groupList = document.getElementById("group-list");
 
-  // Delete project from DOM
+    const groupItem = document.createElement("div");
+    groupItem.setAttribute("class", "group-item");
+    groupItem.setAttribute("id", newGroup);
+    groupList.appendChild(groupItem);
+
+    const groupName = document.createElement("div");
+    groupName.setAttribute("class", "group-title");
+    groupName.innerHTML = newGroup;
+    groupName.addEventListener("click", taskController.displayGroup);
+    groupItem.appendChild(groupName);
+
+    const groupDeleteButton = document.createElement("button");
+    groupItem.appendChild(groupDeleteButton);
+
+    const groupDelete = document.createElement("IMG");
+    groupDelete.setAttribute("src", "/assets/clear_black_24dp.svg");
+    groupDelete.addEventListener("click", taskController.deleteGroup);
+    groupDeleteButton.appendChild(groupDelete);
+
+    const groupSelect = document.getElementById("group");
+    const groupSelectOption = document.createElement("option");
+    groupSelectOption.setAttribute("value", newGroup);
+    groupSelectOption.setAttribute("id", newGroup);
+    groupSelectOption.text = newGroup;
+    groupSelect.appendChild(groupSelectOption);
+  };
+
   // Expand task to show description
 
-  // Change project
+  // Change group
+  const clearTaskDisplay = () => {
+    const oldTodoList = document.getElementById("todo-list-content");
+    oldTodoList.remove();
+
+    const newTodoList = document.createElement("div");
+    newTodoList.setAttribute("id", "todo-list-content");
+    newTodoList.setAttribute("class", "todo-list");
+
+    const todoList = document.getElementById("todo-list")
+    todoList.appendChild(newTodoList)
+  };
 
   initialiseEventListeners();
 
-  return { getTaskForm, addTask, markTaskComplete, deleteTask };
+  return {
+    getTaskForm,
+    addTask,
+    markTaskComplete,
+    deleteElement,
+    getGroupForm,
+    addGroup,
+    clearTaskDisplay,
+  };
 })();
 
 export { taskFactory, taskController, displayController };

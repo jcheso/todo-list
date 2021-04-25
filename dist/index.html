@@ -13,10 +13,23 @@
     </header>
     <div id="main" class="container">
       <div class="side-bar">
-        <div class="group-list">
-          <div class="group-item">View All</div>
-          <div class="group-item">Project 1</div>
-          <div class="group-item">Project 2</div>
+        <div id="group-list" class="group-list">
+          <div id="View All" class="group-item"><div>View All</div></div>
+          <div id="General" class="group-item"><div>General</div></div>
+          </div>
+          <div class="new-group-div">
+            <form class="new-group-form" id ="new-group-form">
+              <input
+                type="text"
+                id="new-group"
+                name="new-group"
+                required="true"
+                value="Test group"
+              />
+              <button id="new-group-btn" class="button">Add Task</button>
+
+            </form>
+        </footer>
         </div>
       </div>
       <div class="todo-content">
@@ -28,6 +41,7 @@
             <div class="todo-item-date">Due Date</div>
             <div class="todo-item-group">Group</div>
           </div>
+          <div id="todo-list-content" class="todo-list"></div>
 
           <footer>
             <div class="form-popup" id="myForm">
@@ -51,13 +65,9 @@
                 />
 
                 <label for="group">Group</label>
-                <input
-                  type="text"
-                  id="group"
-                  name="group"
-                  required="true"
-                  value="Test Group"
-                />
+                <select name="group" id="group" required="true">
+                  <option value="General">General</option>
+                </select>
 
                 <label for="due-date">Due Date</label>
                 <input
