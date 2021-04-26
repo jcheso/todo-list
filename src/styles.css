@@ -105,21 +105,64 @@ header {
 
 .todo-item {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  border-bottom: 1px solid #313638;
-  padding: 10px 10px 10px 20px;
-  margin: 10px;
+  flex-direction: column;
 }
 
-.todo-item-complete{
+.todo-item-display {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   border-bottom: 1px solid #313638;
   padding: 10px 10px 10px 20px;
   margin: 10px;
+  width: 100%;
+}
+
+
+.todo-item-high {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-bottom: 1px solid #313638;
+  padding: 10px 10px 10px 20px;
+  margin: 10px;
+  background-color: red;
+  opacity: 0.5;
+}
+
+.todo-item-medium {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-bottom: 1px solid #313638;
+  padding: 10px 10px 10px 20px;
+  margin: 10px;
+  background-color: orangered;
+  opacity: 0.5;
+}
+
+
+.todo-item-low {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-bottom: 1px solid #313638;
+  padding: 10px 10px 10px 20px;
+  margin: 10px;
+  background-color: greenyellow;
+  opacity: 0.5;
+}
+
+.todo-item-complete{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-bottom: 1px solid #313638;
+  padding: 10px 10px 10px 20px;
+  margin: 10px;
   text-decoration: line-through;
+  background-color: grey;
+  opacity: 0.5;
 }
 
 .todo-item-title {
@@ -133,6 +176,11 @@ header {
 
 .todo-item-group {
   text-align: right;
+
+}
+
+.todo-item-description{
+
 
 }
 

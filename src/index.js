@@ -1,15 +1,26 @@
+/* **Feature List**
+- Add tasks to a group with due date, description and priority.
+- Expand task to show description
+- Add custom groups
+- Delete groups and all tasks in it
+- Mark tasks complete or delete individual tasks
+- Highlight tasks based on their priority
+*/
+
 import { compareAsc, format } from "date-fns";
 
 //Factory to create new Todo items - properties to incl. title, description, dueDate, priority and status
 const taskFactory = (task, description, group, dueDate, priority) => {
+  let expandDescription = false;
   let isComplete = false;
-  return { task, description, group, dueDate, priority, isComplete };
+  return { task, description, group, dueDate, priority, isComplete, expandDescription };
 };
 
 //Module to modify the Todo item - create new Todo, setting todo as complete, changing priority
 const taskController = (() => {
   let taskList = [];
   let groupList = ["View All", "General"];
+  let currentGroup = "View All";
 
   const addTask = () => {
     const taskFormData = displayController.getTaskForm(event);
@@ -22,26 +33,24 @@ const taskController = (() => {
         taskFormData.priority
       )
     );
-    displayController.addTask(
-      taskList[taskList.length - 1],
-      taskList.length - 1
-    );
+    if (currentGroup !== taskFormData.group) {
+      currentGroup = "View All";
+      displayGroup(currentGroup);
+    }
   };
 
   const markTaskComplete = (event) => {
-    const id = event.target.parentElement.parentElement.id;
-    console.log(taskList[id].isComplete);
+    const id = event.target.parentElement.parentElement.parentElement.id;
     if (taskList[id].isComplete) {
       taskList[id].isComplete = false;
     } else {
       taskList[id].isComplete = true;
     }
-    displayController.markTaskComplete(id);
-    console.log(taskList[id].isComplete);
+    displayController.markTaskComplete(id, taskList[id].priority);
   };
 
   const deleteTask = (event) => {
-    const id = event.target.parentElement.parentElement.id;
+    const id = event.target.parentElement.parentElement.parentElement.id;
     taskList.splice(id, 1, "");
     displayController.deleteElement(id);
   };
@@ -68,29 +77,61 @@ const taskController = (() => {
   const addGroup = () => {
     // Get form variables from DOM input function
     const newGroup = displayController.getGroupForm(event);
-    console.log(newGroup);
     // Check if existing and add to array
     if (groupList.includes(newGroup)) {
       alert("This group already exists");
     } else {
       groupList.push(newGroup);
       displayController.addGroup(newGroup, groupList.length - 1);
-      console.table(groupList);
     }
   };
 
-  const displayGroup = () => {
-    const groupName = event.target.parentElement.id;
-
-    displayController.clearTaskDisplay();
-    // If groupName is View all - just display all instead.
+  const displayAll = () => {
     taskList.forEach((taskObj, index) => {
-      if (taskObj.group == groupName) {
       displayController.addTask(taskObj, index);
-      }
     });
-    
   };
+
+  const getGroupName = () => {
+    const groupName = event.target.parentElement.id;
+    currentGroup = groupName;
+    displayGroup(groupName);
+  };
+
+  const displayGroup = (groupName) => {
+    // Clear current groups
+    displayController.clearTaskDisplay();
+    displayController.updateGroupHeader(groupName);
+    // If groupName is View all - just display all instead.
+    if (groupName == "View All") {
+      displayAll();
+    } else
+      taskList.forEach((taskObj, index) => {
+        if (taskObj.group == groupName) {
+          displayController.addTask(taskObj, index);
+        }
+      });
+  };
+
+  const displayDescription = () => {
+    const id = event.target.parentElement.parentElement.parentElement.id;
+    console.log(id)
+    const taskObj = taskList[id]
+    //Triggered by onclick element on the group.
+    // Get the id of the task
+    if (!taskObj.expandDescription){
+      displayController.expandDescription(id, taskObj)
+      taskObj.expandDescription = true
+    }
+    else {
+      displayController.hideDescription(id, taskObj)
+      taskObj.expandDescription = false
+    }
+
+    // Run a function in displayController to insert a div below the task with the description
+    // Function checks if div exists already, if so, delete it instead of adding
+  }
+
   return {
     addTask,
     markTaskComplete,
@@ -98,6 +139,9 @@ const taskController = (() => {
     addGroup,
     deleteGroup,
     displayGroup,
+    currentGroup,
+    getGroupName,
+    displayDescription,
   };
 })();
 
@@ -129,8 +173,12 @@ const displayController = (() => {
   const initialiseEventListeners = () => {
     document.getElementById("close-btn").addEventListener("click", closeForm);
     document.getElementById("open-btn").addEventListener("click", openForm);
-    document.getElementById("View All").addEventListener("click", taskController.displayGroup);
-    document.getElementById("General").addEventListener("click", taskController.displayGroup);
+    document
+      .getElementById("View All")
+      .addEventListener("click", taskController.getGroupName);
+    document
+      .getElementById("General")
+      .addEventListener("click", taskController.getGroupName);
     document
       .getElementById("add-task-form")
       .addEventListener("submit", taskController.addTask);
@@ -151,12 +199,29 @@ const displayController = (() => {
     const todoList = document.getElementById("todo-list-content");
 
     const todoItem = document.createElement("div");
-    todoItem.setAttribute("class", "todo-item");
+    todoItem.setAttribute("class", `todo-item-${taskObj.priority}`);
     todoItem.setAttribute("id", index);
     todoList.appendChild(todoItem);
 
+    const todoItemDisplay = document.createElement("div");
+    todoItemDisplay.setAttribute("class", `todo-item-display`);
+    todoItem.appendChild(todoItemDisplay);
+
+    const todoItemExpand = document.createElement("button");
+    todoItemDisplay.appendChild(todoItemExpand);
+
+    const todoImageExpand = document.createElement("IMG");
+    todoImageExpand.setAttribute("id", `expand${index}`);
+    todoImageExpand.setAttribute("src", "/assets/expand_more_black_24dp.svg");
+    todoImageExpand.addEventListener("click", taskController.displayDescription);
+    todoItemExpand.appendChild(todoImageExpand);
+    
+    addDiv("todo-item-title", todoItemDisplay, taskObj.task);
+    addDiv("todo-item-group", todoItemDisplay, taskObj.group);
+    addDiv("todo-item-dueDate", todoItemDisplay, taskObj.dueDate);
+
     const todoItemCompleteButton = document.createElement("button");
-    todoItem.appendChild(todoItemCompleteButton);
+    todoItemDisplay.appendChild(todoItemCompleteButton);
 
     const todoImage = document.createElement("IMG");
     todoImage.setAttribute("src", "/assets/done_black_24dp.svg");
@@ -164,26 +229,22 @@ const displayController = (() => {
     todoItemCompleteButton.appendChild(todoImage);
 
     const todoItemDeleteButton = document.createElement("button");
-    todoItem.appendChild(todoItemDeleteButton);
+    todoItemDisplay.appendChild(todoItemDeleteButton);
 
     const todoImageDelete = document.createElement("IMG");
     todoImageDelete.setAttribute("src", "/assets/delete_black_24dp.svg");
     todoImageDelete.addEventListener("click", taskController.deleteTask);
     todoItemDeleteButton.appendChild(todoImageDelete);
-
-    addDiv("todo-item-title", todoItem, taskObj.task);
-    addDiv("todo-item-dueDate", todoItem, taskObj.dueDate);
-    addDiv("todo-item-group", todoItem, taskObj.group);
   };
 
   // Mark Complete
-  const markTaskComplete = (id) => {
+  const markTaskComplete = (id, priority) => {
     const task = document.getElementById(id);
     const taskClass = task.getAttribute("class");
-    if (taskClass == "todo-item") {
+    if (taskClass == `todo-item-${priority}`) {
       task.setAttribute("class", "todo-item-complete");
     } else {
-      task.setAttribute("class", "todo-item");
+      task.setAttribute("class", `todo-item-${priority}`);
     }
   };
   // Delete task from DOM
@@ -210,7 +271,7 @@ const displayController = (() => {
     const groupName = document.createElement("div");
     groupName.setAttribute("class", "group-title");
     groupName.innerHTML = newGroup;
-    groupName.addEventListener("click", taskController.displayGroup);
+    groupName.addEventListener("click", taskController.getGroupName);
     groupItem.appendChild(groupName);
 
     const groupDeleteButton = document.createElement("button");
@@ -240,11 +301,39 @@ const displayController = (() => {
     newTodoList.setAttribute("id", "todo-list-content");
     newTodoList.setAttribute("class", "todo-list");
 
-    const todoList = document.getElementById("todo-list")
-    todoList.appendChild(newTodoList)
+    const todoList = document.getElementById("todo-list");
+    todoList.appendChild(newTodoList);
   };
 
+  const updateGroupHeader = (currentGroup) => {
+    document.getElementById("todo-header").innerText = currentGroup;
+  };
+
+  const expandDescription = (id, taskObj) => {
+    // Change graphic to expand less
+    const todoItemExpand = document.getElementById(`expand${id}`)
+    todoItemExpand.setAttribute("src", "/assets/expand_less_black_24dp.svg")
+    const todoItem = document.getElementById(id)
+
+    // Insert div below task with description
+    const todoItemDescription = document.createElement("div");
+    todoItemDescription.setAttribute("class", `todo-item-description`);
+    todoItemDescription.setAttribute("id", `description-${taskObj.id}`);
+    todoItemDescription.innerText = taskObj.description
+    todoItem.appendChild(todoItemDescription);
+  }
+
+  const hideDescription = (id, taskObj) => {
+    // Remove div with description
+    const todoItemDescription = document.getElementById(`description-${taskObj.id}`)
+    todoItemDescription.remove()
+    // Change icon back to expand more
+    const todoItemExpand = document.getElementById(`expand${id}`)
+    todoItemExpand.setAttribute("src", "/assets/expand_more_black_24dp.svg")
+  }
+
   initialiseEventListeners();
+  updateGroupHeader(taskController.currentGroup);
 
   return {
     getTaskForm,
@@ -254,7 +343,8 @@ const displayController = (() => {
     getGroupForm,
     addGroup,
     clearTaskDisplay,
+    updateGroupHeader,
+    expandDescription,
+    hideDescription,
   };
 })();
-
-export { taskFactory, taskController, displayController };
