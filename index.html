@@ -11,114 +11,113 @@
         <h1>Todo List</h1>
       </div>
     </header>
-    <div id="main" class="container">
+    <div id="main">
       <div class="side-bar">
-        <div id="group-list" class="group-list">
-          <div id="View All" class="group-item"><div>View All</div></div>
-          <div id="General" class="group-item"><div>General</div></div>
-          </div>
-          <div class="new-group-div">
-            <form class="new-group-form" id ="new-group-form">
+        <div class="new-group-div">
+          <form class="new-group-form" id="new-group-form">
+            <div class="side-bar-field">
               <input
                 type="text"
                 id="new-group"
                 name="new-group"
                 required="true"
-                value="Test group"
+                value="Add new group"
+                class="side-bar-input"
               />
-              <button id="new-group-btn" class="button">Add Task</button>
-
-            </form>
-        </footer>
+              <button id="new-group-btn" class="new-group-btn">
+                <img src="/assets/add_white_24dp.svg" />
+              </button>
+            </div>
+          </form>
         </div>
+        <button id="View All" class="side-bar-btn main-color">View All</button>
+        <hr class="divider" />
+        <button id="General" class="side-bar-btn secondary-color">
+          General
+        </button>
+        <div id="group-list" class="group-list"></div>
       </div>
       <div class="todo-content">
-        <div id="todo-header" class="todo-header">View All</div>
-        <div id="todo-list" class="todo-list">
-          <div class="todo-list-header">
-            <div class="todo-item-title">Task</div>
-            <div class="todo-item-group">Group</div>
-            <div class="todo-item-date">Due Date</div>
+        <div class="todo-wrapper container">
+          <div id="todo-header" class="todo-header">View All</div>
+          <div id="todo-list" class="todo-list">
+            <div class="todo-list-header"></div>
+            <div id="todo-list-content" class="todo-list"></div>
           </div>
-          <div id="todo-list-content" class="todo-list"></div>
-
-          <footer>
-            <div class="form-popup" id="myForm">
-              <form id="add-task-form" class="add-task-form">
-                <label for="task">Task</label>
-                <input
-                  type="text"
-                  id="task"
-                  name="task"
-                  required="true"
-                  value="Test"
-                />
-
-                <label for="description">Description</label>
-                <input
-                  type="text"
-                  id="description"
-                  name="description"
-                  required="true"
-                  value="Test Description"
-                />
-
-                <label for="group">Group</label>
-                <select name="group" id="group" required="true">
-                  <option value="General">General</option>
-                </select>
-
-                <label for="due-date">Due Date</label>
-                <input
-                  type="date"
-                  id="due-date"
-                  name="due-date"
-                  required="true"
-                  value="2021-09-21"
-                />
-                <div class="radio-buttons">
-                  <div><h4>Priority</h4></div>
-                  <label for="priority-high"
-                    >High
-                    <input
-                      type="radio"
-                      id="priority-high"
-                      name="priority"
-                      value="high"
-                    />
-                  </label>
-                  <label for="priority-medium"
-                    >Medium
-                    <input
-                      type="radio"
-                      id="priority-medium"
-                      name="priority"
-                      value="medium"
-                    />
-                  </label>
-                  <label for="priority-low"
-                    >Low
-                    <input
-                      type="radio"
-                      id="priority-low"
-                      name="priority"
-                      value="low"
-                    />
-                  </label>
-                </div>
-                <input
-                  id="close-btn"
-                  class="button"
-                  type="submit"
-                  value="Add Task"
-                />
-              </form>
-            </div>
-            <button id="open-btn" class="open-button">Add Task</button>
-          </footer>
         </div>
       </div>
     </div>
+    <footer>
+      <div class="form-popup" id="myForm">
+        <form id="add-task-form" class="add-task-form">
+          <label for="task">Task</label>
+          <input type="text" id="task" name="task" required="true" />
+
+          <label for="description">Description</label>
+          <input
+            type="text"
+            id="description"
+            name="description"
+            required="true"
+          />
+          <div class="select-wrapper">
+            <label for="group">Group</label>
+            <select class="select-box" name="group" id="group" required="true">
+              <option value="General">General</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="due-date">Due Date</label>
+            <input
+              type="date"
+              id="due-date"
+              name="due-date"
+              required="true"
+              value="2021-09-21"
+            />
+          </div>
+          <div>Priority</div>
+          <div class="radio-buttons">
+            <label for="priority-high"
+              >High
+              <input
+                type="radio"
+                id="priority-high"
+                name="priority"
+                value="high"
+                class="radio"
+              />
+            </label>
+            <label for="priority-medium"
+              >Medium
+              <input
+                type="radio"
+                id="priority-medium"
+                name="priority"
+                value="medium"
+              />
+            </label>
+            <label for="priority-low"
+              >Low
+              <input
+                type="radio"
+                id="priority-low"
+                name="priority"
+                value="low"
+              />
+            </label>
+          </div>
+          <input
+            id="close-btn"
+            class="open-button"
+            type="submit"
+            value="Add Task"
+          />
+        </form>
+      </div>
+      <button id="open-btn" class="open-button">Add Task</button>
+    </footer>
 
     <script src="main.js"></script>
   </body>
