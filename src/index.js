@@ -13,7 +13,15 @@ import { compareAsc, format } from "date-fns";
 const taskFactory = (task, description, group, dueDate, priority) => {
   let expandDescription = false;
   let isComplete = false;
-  return { task, description, group, dueDate, priority, isComplete, expandDescription };
+  return {
+    task,
+    description,
+    group,
+    dueDate,
+    priority,
+    isComplete,
+    expandDescription,
+  };
 };
 
 //Module to modify the Todo item - create new Todo, setting todo as complete, changing priority
@@ -35,6 +43,8 @@ const taskController = (() => {
     );
     if (currentGroup !== taskFormData.group) {
       currentGroup = "View All";
+      displayGroup(currentGroup);
+    } else {
       displayGroup(currentGroup);
     }
   };
@@ -93,7 +103,7 @@ const taskController = (() => {
   };
 
   const getGroupName = () => {
-    const groupName = event.target.parentElement.id;
+    const groupName = event.target.id;
     currentGroup = groupName;
     displayGroup(groupName);
   };
@@ -115,22 +125,21 @@ const taskController = (() => {
 
   const displayDescription = () => {
     const id = event.target.parentElement.parentElement.parentElement.id;
-    console.log(id)
-    const taskObj = taskList[id]
+    console.log(id);
+    const taskObj = taskList[id];
     //Triggered by onclick element on the group.
     // Get the id of the task
-    if (!taskObj.expandDescription){
-      displayController.expandDescription(id, taskObj)
-      taskObj.expandDescription = true
-    }
-    else {
-      displayController.hideDescription(id, taskObj)
-      taskObj.expandDescription = false
+    if (!taskObj.expandDescription) {
+      displayController.expandDescription(id, taskObj);
+      taskObj.expandDescription = true;
+    } else {
+      displayController.hideDescription(id, taskObj);
+      taskObj.expandDescription = false;
     }
 
     // Run a function in displayController to insert a div below the task with the description
     // Function checks if div exists already, if so, delete it instead of adding
-  }
+  };
 
   return {
     addTask,
@@ -208,31 +217,48 @@ const displayController = (() => {
     todoItem.appendChild(todoItemDisplay);
 
     const todoItemExpand = document.createElement("button");
+    todoItemExpand.setAttribute("class", "side-bar-btn task-button main-color");
     todoItemDisplay.appendChild(todoItemExpand);
 
     const todoImageExpand = document.createElement("IMG");
     todoImageExpand.setAttribute("id", `expand${index}`);
-    todoImageExpand.setAttribute("src", "/assets/expand_more_black_24dp.svg");
-    todoImageExpand.addEventListener("click", taskController.displayDescription);
+    todoImageExpand.setAttribute("src", "/assets/expand_more_white_24dp.svg");
+    todoImageExpand.addEventListener(
+      "click",
+      taskController.displayDescription
+    );
     todoItemExpand.appendChild(todoImageExpand);
-    
-    addDiv("todo-item-title", todoItemDisplay, taskObj.task);
-    addDiv("todo-item-group", todoItemDisplay, taskObj.group);
-    addDiv("todo-item-dueDate", todoItemDisplay, taskObj.dueDate);
+
+    const todoItemContainer = document.createElement("div");
+    todoItemContainer.setAttribute("class", `todo-item-container`);
+    todoItemDisplay.appendChild(todoItemContainer);
+
+    addDiv("todo-item-title", todoItemContainer, taskObj.task);
+    addDiv("todo-item-group", todoItemContainer, taskObj.group);
+    addDiv("todo-item-dueDate", todoItemContainer, taskObj.dueDate);
 
     const todoItemCompleteButton = document.createElement("button");
+    todoItemCompleteButton.setAttribute(
+      "class",
+      "side-bar-btn task-button main-color"
+    );
     todoItemDisplay.appendChild(todoItemCompleteButton);
 
     const todoImage = document.createElement("IMG");
-    todoImage.setAttribute("src", "/assets/done_black_24dp.svg");
+    todoImage.setAttribute("src", "/assets/done_white_24dp.svg");
     todoImage.addEventListener("click", taskController.markTaskComplete);
+
     todoItemCompleteButton.appendChild(todoImage);
 
     const todoItemDeleteButton = document.createElement("button");
+    todoItemDeleteButton.setAttribute(
+      "class",
+      "side-bar-btn task-button main-color"
+    );
     todoItemDisplay.appendChild(todoItemDeleteButton);
 
     const todoImageDelete = document.createElement("IMG");
-    todoImageDelete.setAttribute("src", "/assets/delete_black_24dp.svg");
+    todoImageDelete.setAttribute("src", "/assets/delete_white_24dp.svg");
     todoImageDelete.addEventListener("click", taskController.deleteTask);
     todoItemDeleteButton.appendChild(todoImageDelete);
   };
@@ -264,21 +290,23 @@ const displayController = (() => {
     const groupList = document.getElementById("group-list");
 
     const groupItem = document.createElement("div");
-    groupItem.setAttribute("class", "group-item");
+    groupItem.setAttribute("class", "side-bar-field");
     groupItem.setAttribute("id", newGroup);
     groupList.appendChild(groupItem);
 
-    const groupName = document.createElement("div");
-    groupName.setAttribute("class", "group-title");
-    groupName.innerHTML = newGroup;
-    groupName.addEventListener("click", taskController.getGroupName);
-    groupItem.appendChild(groupName);
+    const groupItemButton = document.createElement("button");
+    groupItemButton.setAttribute("class", "side-bar-btn accent-color");
+    groupItemButton.innerHTML = newGroup;
+    groupItemButton.setAttribute("id", newGroup);
+    groupItemButton.addEventListener("click", taskController.getGroupName);
+    groupItem.appendChild(groupItemButton);
 
     const groupDeleteButton = document.createElement("button");
+    groupDeleteButton.setAttribute("class", "new-group-btn ");
     groupItem.appendChild(groupDeleteButton);
 
     const groupDelete = document.createElement("IMG");
-    groupDelete.setAttribute("src", "/assets/clear_black_24dp.svg");
+    groupDelete.setAttribute("src", "/assets/clear_white_24dp.svg");
     groupDelete.addEventListener("click", taskController.deleteGroup);
     groupDeleteButton.appendChild(groupDelete);
 
@@ -311,26 +339,28 @@ const displayController = (() => {
 
   const expandDescription = (id, taskObj) => {
     // Change graphic to expand less
-    const todoItemExpand = document.getElementById(`expand${id}`)
-    todoItemExpand.setAttribute("src", "/assets/expand_less_black_24dp.svg")
-    const todoItem = document.getElementById(id)
+    const todoItemExpand = document.getElementById(`expand${id}`);
+    todoItemExpand.setAttribute("src", "/assets/expand_less_white_24dp.svg");
+    const todoItem = document.getElementById(id);
 
     // Insert div below task with description
     const todoItemDescription = document.createElement("div");
     todoItemDescription.setAttribute("class", `todo-item-description`);
     todoItemDescription.setAttribute("id", `description-${taskObj.id}`);
-    todoItemDescription.innerText = taskObj.description
+    todoItemDescription.innerText = taskObj.description;
     todoItem.appendChild(todoItemDescription);
-  }
+  };
 
   const hideDescription = (id, taskObj) => {
     // Remove div with description
-    const todoItemDescription = document.getElementById(`description-${taskObj.id}`)
-    todoItemDescription.remove()
+    const todoItemDescription = document.getElementById(
+      `description-${taskObj.id}`
+    );
+    todoItemDescription.remove();
     // Change icon back to expand more
-    const todoItemExpand = document.getElementById(`expand${id}`)
-    todoItemExpand.setAttribute("src", "/assets/expand_more_black_24dp.svg")
-  }
+    const todoItemExpand = document.getElementById(`expand${id}`);
+    todoItemExpand.setAttribute("src", "/assets/expand_more_white_24dp.svg");
+  };
 
   initialiseEventListeners();
   updateGroupHeader(taskController.currentGroup);
