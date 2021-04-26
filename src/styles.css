@@ -4,32 +4,31 @@
 
 body {
   margin: 0px;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
   color: #313638;
   /* background-color: #313638; */
 }
 
-@media only screen and (min-width: 768px) {
-  .container {
-    margin: auto;
-    max-width: 1024px;
-  
+.container {
+  margin: auto;
+  max-width: 1024px;
 }
 
 .todo-wrapper {
   padding: 10px;
   background-color: white;
   border-radius: 10px;
-  border: #DBDBDB solid 2px;
+  border: #dbdbdb solid 2px;
 }
 
 header {
-  background-color: #BFC0C0;
-  color: #2D3142;
+  background-color: #bfc0c0;
+  color: #2d3142;
   text-transform: uppercase;
 }
 
-.todo-title{
+.todo-title {
   font-weight: 600;
 }
 
@@ -43,7 +42,6 @@ header {
 }
 #main > .side-bar {
   flex: 0 0 15vw;
-
 }
 
 #main > .side-bar {
@@ -56,7 +54,6 @@ header,
   padding: 1em;
 }
 
-
 .divider {
   border: #383b5c solid 0.5px;
   border-radius: 10px;
@@ -64,33 +61,32 @@ header,
 }
 
 .side-bar {
-  background-color: #2D3142;
+  background-color: #2d3142;
   font-size: large;
 }
 
 .side-bar-btn {
   padding: 10px;
-  width:100%;
+  width: 100%;
   border: none;
   border-radius: 5px;
-  color:white;
+  color: white;
   font-weight: 400;
   text-transform: uppercase;
   margin: 5px 5px 5px 0;
   cursor: pointer;
   opacity: 0.9;
-  
 }
 
-.task-button{
+.task-button {
   width: auto;
 }
 .main-color {
-  background-color: #4F5D75;
+  background-color: #4f5d75;
 }
 
 .secondary-color {
-  background-color: #EF8354;
+  background-color: #ef8354;
 }
 
 .accent-color {
@@ -110,20 +106,19 @@ header,
   border-radius: 5px;
   border: none;
   margin: 5px 5px 5px 0;
-  cursor:text;
-
+  cursor: text;
 }
 
-.new-group-btn{
+.new-group-btn {
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
   padding: 0 10px 0 10px;
   border: none;
-  background-color: #4F5D75;
+  background-color: #4f5d75;
   font-weight: 400;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: larger;
   text-transform: uppercase;
   margin: 5px 0 5px 0;
@@ -145,8 +140,7 @@ header,
   text-align: center;
 }
 .todo-content {
-  background-color:#FFFFFF
-
+  background-color: #ffffff;
 }
 
 .todo-header {
@@ -159,7 +153,7 @@ header,
   text-transform: uppercase;
 }
 
-.todo-list-header{
+.todo-list-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -168,7 +162,6 @@ header,
   margin: 10px 10px 30px 10px;
   font-weight: 600;
   text-transform: uppercase;
-
 }
 
 .todo-item {
@@ -182,10 +175,9 @@ header,
   justify-content: left;
   padding: 10px 10px 10px 20px;
   margin: 10px;
-
 }
 
-.todo-item-container{
+.todo-item-container {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -211,7 +203,6 @@ header,
   border-radius: 15px;
 }
 
-
 .todo-item-low {
   display: flex;
   flex-direction: column;
@@ -221,7 +212,7 @@ header,
   border-radius: 15px;
 }
 
-.todo-item-complete{
+.todo-item-complete {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -232,7 +223,7 @@ header,
   opacity: 0.5;
 }
 
-.todo-item-description{
+.todo-item-description {
   padding: 10px 10px 20px 25px;
 }
 
@@ -244,7 +235,7 @@ header,
   align-items: center;
   border-radius: 5px;
   border: none;
-  background-color: #4F5D75;
+  background-color: #4f5d75;
   font-weight: 400;
   color: white;
   font-size: larger;
@@ -256,7 +247,6 @@ header,
   right: 25px;
   width: 180px;
   opacity: 0.9;
-
 }
 
 /* The popup form - hidden by default */
@@ -270,7 +260,7 @@ header,
   padding: 10px;
   background-color: white;
   border-radius: 10px;
-  border: #DBDBDB solid 2px;
+  border: #dbdbdb solid 2px;
 }
 
 /* Add styles to the form container */
@@ -281,7 +271,7 @@ header,
   font-weight: 600;
 }
 
-.radio-buttons{
+.radio-buttons {
   font-weight: 300;
 }
 
@@ -312,22 +302,21 @@ header,
   color: #313638;
 }
 
-.select-wrapper{
+.select-wrapper {
   display: flex;
   flex-direction: column;
 }
 
-.select-box{
+.select-box {
   padding: 15px 0px 15px 0px;
   margin: 5px 0 22px 0;
   border: none;
   background: #e8e9eb;
-  color: #4F5D75;
-
+  color: #4f5d75;
 }
 .add-task-form .button {
   background-color: #f06543;
-  color: #4F5D75;
+  color: #4f5d75;
   padding: 16px 20px;
   border: none;
   cursor: pointer;
@@ -340,6 +329,8 @@ header,
 
 .add-task-form .button:hover,
 .open-button:hover,
-.close-button:hover, .new-group-btn:hover, .side-bar-btn:hover {
+.close-button:hover,
+.new-group-btn:hover,
+.side-bar-btn:hover {
   opacity: 1;
 }
