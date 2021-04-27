@@ -229,7 +229,7 @@ const displayController = (() => {
 
     const todoImageExpand = document.createElement("IMG");
     todoImageExpand.setAttribute("id", `expand${index}`);
-    todoImageExpand.setAttribute("src", expandWhite);
+    todoImageExpand.setAttribute("src", expandMore);
     todoImageExpand.addEventListener(
       "click",
       taskController.displayDescription
