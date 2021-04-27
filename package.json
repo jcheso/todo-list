@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode development",
-    "dev": "webpack --watch"
+    "watch": "webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -20,11 +20,13 @@
   "homepage": "https://github.com/Cheso7/todo-list#readme",
   "keywords": [],
   "devDependencies": {
+    "css-loader": "^5.2.4",
     "html-webpack-plugin": "^5.3.1",
     "webpack": "^5.35.1",
     "webpack-cli": "^4.6.0"
   },
   "dependencies": {
-    "date-fns": "^2.21.1"
+    "date-fns": "^2.21.1",
+    "style-loader": "^2.0.0"
   }
 }

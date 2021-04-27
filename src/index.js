@@ -7,7 +7,14 @@
 - Highlight tasks based on their priority
 */
 
-import { compareAsc, format } from "date-fns";
+import './styles.css';
+// import addWhite from './assets/add_white_24dp.svg';
+import clearWhite from './assets/clear_white_24dp.svg'
+import deleteWhite from './assets/delete_white_24dp.svg'
+import doneWhite from './assets/done_white_24dp.svg'
+import expandMore from './assets/expand_more_white_24dp.svg'
+import expandLess from './assets/expand_less_white_24dp.svg'
+
 
 //Factory to create new Todo items - properties to incl. title, description, dueDate, priority and status
 const taskFactory = (task, description, group, dueDate, priority) => {
@@ -222,7 +229,7 @@ const displayController = (() => {
 
     const todoImageExpand = document.createElement("IMG");
     todoImageExpand.setAttribute("id", `expand${index}`);
-    todoImageExpand.setAttribute("src", "/assets/expand_more_white_24dp.svg");
+    todoImageExpand.setAttribute("src", expandWhite);
     todoImageExpand.addEventListener(
       "click",
       taskController.displayDescription
@@ -245,7 +252,7 @@ const displayController = (() => {
     todoItemDisplay.appendChild(todoItemCompleteButton);
 
     const todoImage = document.createElement("IMG");
-    todoImage.setAttribute("src", "/assets/done_white_24dp.svg");
+    todoImage.setAttribute("src", doneWhite);
     todoImage.addEventListener("click", taskController.markTaskComplete);
 
     todoItemCompleteButton.appendChild(todoImage);
@@ -258,7 +265,7 @@ const displayController = (() => {
     todoItemDisplay.appendChild(todoItemDeleteButton);
 
     const todoImageDelete = document.createElement("IMG");
-    todoImageDelete.setAttribute("src", "/assets/delete_white_24dp.svg");
+    todoImageDelete.setAttribute("src", deleteWhite);
     todoImageDelete.addEventListener("click", taskController.deleteTask);
     todoItemDeleteButton.appendChild(todoImageDelete);
   };
@@ -306,7 +313,7 @@ const displayController = (() => {
     groupItem.appendChild(groupDeleteButton);
 
     const groupDelete = document.createElement("IMG");
-    groupDelete.setAttribute("src", "/assets/clear_white_24dp.svg");
+    groupDelete.setAttribute("src", clearWhite);
     groupDelete.addEventListener("click", taskController.deleteGroup);
     groupDeleteButton.appendChild(groupDelete);
 
@@ -340,7 +347,7 @@ const displayController = (() => {
   const expandDescription = (id, taskObj) => {
     // Change graphic to expand less
     const todoItemExpand = document.getElementById(`expand${id}`);
-    todoItemExpand.setAttribute("src", "/assets/expand_less_white_24dp.svg");
+    todoItemExpand.setAttribute("src", expandLess);
     const todoItem = document.getElementById(id);
 
     // Insert div below task with description
@@ -359,7 +366,7 @@ const displayController = (() => {
     todoItemDescription.remove();
     // Change icon back to expand more
     const todoItemExpand = document.getElementById(`expand${id}`);
-    todoItemExpand.setAttribute("src", "/assets/expand_more_white_24dp.svg");
+    todoItemExpand.setAttribute("src", expandMore);
   };
 
   initialiseEventListeners();
