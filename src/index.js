@@ -7,14 +7,13 @@
 - Highlight tasks based on their priority
 */
 
-import './styles.css';
+import "./styles.css";
 // import addWhite from './assets/add_white_24dp.svg';
-import clearWhite from './assets/clear_white_24dp.svg'
-import deleteWhite from './assets/delete_white_24dp.svg'
-import doneWhite from './assets/done_white_24dp.svg'
-import expandMore from './assets/expand_more_white_24dp.svg'
-import expandLess from './assets/expand_less_white_24dp.svg'
-
+import clearWhite from "./assets/clear_white_24dp.svg";
+import deleteWhite from "./assets/delete_white_24dp.svg";
+import doneWhite from "./assets/done_white_24dp.svg";
+import expandMore from "./assets/expand_more_white_24dp.svg";
+import expandLess from "./assets/expand_less_white_24dp.svg";
 
 //Factory to create new Todo items - properties to incl. title, description, dueDate, priority and status
 const taskFactory = (task, description, group, dueDate, priority) => {
@@ -385,3 +384,100 @@ const displayController = (() => {
     hideDescription,
   };
 })();
+
+// Firebase code
+var firebaseConfig = {
+  apiKey: "AIzaSyACz1AHyxagyhFKWK3sAooP_XZT2Yv-ap4",
+  authDomain: "todo-list-720bb.firebaseapp.com",
+  projectId: "todo-list-720bb",
+  storageBucket: "todo-list-720bb.appspot.com",
+  messagingSenderId: "726740587123",
+  appId: "1:726740587123:web:4e27b1cb8d55e381d81006",
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Set event listeners to sign in/out elements
+let signInButtonElement = document.getElementById("sign-in");
+let signOutButtonElement = document.getElementById("sign-out");
+let userPicElement = document.getElementById("user-pic");
+let userNameElement = document.getElementById("user-name");
+signOutButtonElement.addEventListener("click", signOut);
+signInButtonElement.addEventListener("click", signIn);
+
+// Signs-in
+function signIn() {
+  let provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider);
+}
+
+// Signs-out
+function signOut() {
+  firebase.auth().signOut();
+}
+
+// Returns the signed-in user's profile pic URL.
+function getProfilePicUrl() {
+  return (
+    firebase.auth().currentUser.photoURL || "/images/profile_placeholder.png"
+  );
+}
+
+// Returns the signed-in user's display name.
+function getUserName() {
+  return firebase.auth().currentUser.displayName;
+}
+
+// Returns true if a user is signed-in.
+function isUserSignedIn() {
+  return !!firebase.auth().currentUser;
+}
+
+// Adds a size to Google Profile pics URLs.
+function addSizeToGoogleProfilePic(url) {
+  if (url.indexOf("googleusercontent.com") !== -1 && url.indexOf("?") === -1) {
+    return url + "?sz=150";
+  }
+  return url;
+}
+
+// Triggers when the auth state change for instance when the user signs-in or signs-out.
+function authStateObserver(user) {
+  if (user) {
+    // User is signed in!
+    // Get the signed-in user's profile pic and name.
+    var profilePicUrl = getProfilePicUrl();
+    var userName = getUserName();
+
+    // Set the user's profile pic and name.
+    userPicElement.style.backgroundImage =
+      "url(" + addSizeToGoogleProfilePic(profilePicUrl) + ")";
+    userNameElement.textContent = userName;
+
+    // Show user's profile and sign-out button.
+    userNameElement.removeAttribute("hidden");
+    userPicElement.removeAttribute("hidden");
+    signOutButtonElement.removeAttribute("hidden");
+
+    // Hide sign-in button.
+    signInButtonElement.setAttribute("hidden", "true");
+  } else {
+    // User is signed out!
+    // Hide user's profile and sign-out button.
+    userNameElement.setAttribute("hidden", "true");
+    userPicElement.setAttribute("hidden", "true");
+    signOutButtonElement.setAttribute("hidden", "true");
+
+    // Show sign-in button.
+    signInButtonElement.removeAttribute("hidden");
+  }
+}
+
+// Initiate firebase auth.
+function initFirebaseAuth() {
+  // Listen to auth state changes.
+  firebase.auth().onAuthStateChanged(authStateObserver);
+}
+
+initFirebaseAuth();
