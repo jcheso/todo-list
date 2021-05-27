@@ -19,6 +19,7 @@ import expandLess from "./assets/expand_less_white_24dp.svg";
 const taskFactory = (task, description, group, dueDate, priority) => {
   let expandDescription = false;
   let isComplete = false;
+
   return {
     task,
     description,
@@ -38,6 +39,17 @@ const taskController = (() => {
 
   const addTask = () => {
     const taskFormData = displayController.getTaskForm(event);
+    let expandDescription = false;
+    let isComplete = false;
+    saveTask(
+      taskFormData.task,
+      taskFormData.description,
+      taskFormData.group,
+      taskFormData.dueDate,
+      taskFormData.priority,
+      isComplete,
+      expandDescription
+    );
     taskList.push(
       taskFactory(
         taskFormData.task,
@@ -47,6 +59,7 @@ const taskController = (() => {
         taskFormData.priority
       )
     );
+
     if (currentGroup !== taskFormData.group) {
       currentGroup = "View All";
       displayGroup(currentGroup);
@@ -157,6 +170,8 @@ const taskController = (() => {
     currentGroup,
     getGroupName,
     displayDescription,
+    taskList,
+    displayAll,
   };
 })();
 
@@ -397,6 +412,7 @@ var firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+let db = firebase.firestore();
 
 // Set event listeners to sign in/out elements
 let signInButtonElement = document.getElementById("sign-in");
@@ -480,4 +496,46 @@ function initFirebaseAuth() {
   firebase.auth().onAuthStateChanged(authStateObserver);
 }
 
+const saveTask = (task, description, group, dueDate, priority) => {
+  console.log("Saving task to database");
+  return db
+    .collection("tasks")
+    .add({
+      task: task,
+      description: description,
+      group: group,
+      dueDate: dueDate,
+      priority: priority,
+    })
+    .then((docRef) => {
+      console.log("Document written with ID: ", docRef.id);
+    })
+    .catch((error) => {
+      console.error("Error writing new message to database", error);
+    });
+};
+
+// Loads chat messages history and listens for upcoming ones.
+function loadTasks() {
+  db.collection("tasks")
+    .get()
+    .then((querySnapshot) => {
+      console.log(querySnapshot);
+      querySnapshot.forEach((task) => {
+        let taskData = task.data();
+        taskController.taskList.push(
+          taskFactory(
+            taskData.task,
+            taskData.description,
+            taskData.group,
+            taskData.dueDate,
+            taskData.priority
+          )
+        );
+        taskController.displayGroup("View All")
+      });
+    });
+}
+
 initFirebaseAuth();
+loadTasks();
