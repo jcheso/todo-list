@@ -16,7 +16,7 @@ import expandMore from "./assets/expand_more_white_24dp.svg";
 import expandLess from "./assets/expand_less_white_24dp.svg";
 
 //Factory to create new Todo items - properties to incl. title, description, dueDate, priority and status
-const taskFactory = (task, description, group, dueDate, priority) => {
+const taskFactory = (task, description, group, dueDate, priority, id) => {
   let expandDescription = false;
   let isComplete = false;
 
@@ -28,6 +28,7 @@ const taskFactory = (task, description, group, dueDate, priority) => {
     priority,
     isComplete,
     expandDescription,
+    id,
   };
 };
 
@@ -41,6 +42,8 @@ const taskController = (() => {
     const taskFormData = displayController.getTaskForm(event);
     let expandDescription = false;
     let isComplete = false;
+    let id = 0 + taskList.length;
+
     saveTask(
       taskFormData.task,
       taskFormData.description,
@@ -48,15 +51,18 @@ const taskController = (() => {
       taskFormData.dueDate,
       taskFormData.priority,
       isComplete,
-      expandDescription
+      expandDescription,
+      id
     );
-    taskList.push(
+
+    taskController.taskList.push(
       taskFactory(
         taskFormData.task,
         taskFormData.description,
         taskFormData.group,
         taskFormData.dueDate,
-        taskFormData.priority
+        taskFormData.priority,
+        taskFormData.id
       )
     );
 
@@ -496,7 +502,7 @@ function initFirebaseAuth() {
   firebase.auth().onAuthStateChanged(authStateObserver);
 }
 
-const saveTask = (task, description, group, dueDate, priority) => {
+const saveTask = (task, description, group, dueDate, priority, id) => {
   console.log("Saving task to database");
   return db
     .collection("tasks")
@@ -506,6 +512,7 @@ const saveTask = (task, description, group, dueDate, priority) => {
       group: group,
       dueDate: dueDate,
       priority: priority,
+      id: id,
     })
     .then((docRef) => {
       console.log("Document written with ID: ", docRef.id);
@@ -514,28 +521,44 @@ const saveTask = (task, description, group, dueDate, priority) => {
       console.error("Error writing new message to database", error);
     });
 };
-
 // Loads chat messages history and listens for upcoming ones.
-function loadTasks() {
-  db.collection("tasks")
+async function loadTasks() {
+  await db
+    .collection("tasks")
     .get()
     .then((querySnapshot) => {
       console.log(querySnapshot);
       querySnapshot.forEach((task) => {
         let taskData = task.data();
+        console.log("retrieving task", task.id);
         taskController.taskList.push(
           taskFactory(
             taskData.task,
             taskData.description,
             taskData.group,
             taskData.dueDate,
-            taskData.priority
+            taskData.priority,
+            taskData.id
           )
         );
-        taskController.displayGroup("View All")
       });
     });
+  taskController.displayGroup("View All");
+
+  console.log("tasks loaded");
 }
+
+const deleteTask = (task) => {
+  db.collection("tasks")
+    .doc("DC")
+    .delete()
+    .then(() => {
+      console.log("Document successfully deleted!");
+    })
+    .catch((error) => {
+      console.error("Error removing document: ", error);
+    });
+};
 
 initFirebaseAuth();
 loadTasks();
