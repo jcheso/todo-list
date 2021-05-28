@@ -84,8 +84,10 @@ const taskController = (() => {
     const id = event.target.parentElement.parentElement.parentElement.id;
     if (taskList[id].isComplete) {
       taskList[id].isComplete = false;
+      markCompleteFirebase(id, false);
     } else {
       taskList[id].isComplete = true;
+      markCompleteFirebase(id, true);
     }
     displayController.markTaskComplete(id, taskList[id].priority);
   };
@@ -131,6 +133,9 @@ const taskController = (() => {
   const displayAll = () => {
     taskList.forEach((taskObj, index) => {
       displayController.addTask(taskObj, index);
+      if (taskObj.isComplete === true) {
+        displayController.markTaskComplete(taskObj.id, taskObj.priority);
+      }
     });
   };
 
@@ -150,7 +155,10 @@ const taskController = (() => {
     } else
       taskList.forEach((taskObj, index) => {
         if (taskObj.group == groupName) {
-          displayController.addTask(taskObj, index);
+          displayController.addTask(taskObj, taskObj.id);
+        }
+        if (taskObj.isComplete === true) {
+          displayController.markTaskComplete(taskObj.id, taskObj.priority);
         }
       });
   };
@@ -243,7 +251,7 @@ const displayController = (() => {
 
     const todoItem = document.createElement("div");
     todoItem.setAttribute("class", `todo-item-${taskObj.priority}`);
-    todoItem.setAttribute("id", index);
+    todoItem.setAttribute("id", taskObj.id);
     todoList.appendChild(todoItem);
 
     const todoItemDisplay = document.createElement("div");
@@ -531,8 +539,8 @@ const saveTask = (
       isComplete,
       id,
     })
-    .then((docRef) => {
-      console.log("Document written with ID: ", docRef.id);
+    .then(() => {
+      console.log("Document written with ID: ", id);
     })
     .catch((error) => {
       console.error("Error writing new message to database", error);
@@ -576,6 +584,13 @@ const deleteTaskFromFirebase = (id) => {
     .catch((error) => {
       console.error("Error removing document: ", error);
     });
+};
+
+const markCompleteFirebase = (id, status) => {
+  console.log("Saving task to database");
+  return db.collection("tasks").doc(id.toString()).update({
+    isComplete: status,
+  });
 };
 
 initFirebaseAuth();
