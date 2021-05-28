@@ -16,9 +16,16 @@ import expandMore from "./assets/expand_more_white_24dp.svg";
 import expandLess from "./assets/expand_less_white_24dp.svg";
 
 //Factory to create new Todo items - properties to incl. title, description, dueDate, priority and status
-const taskFactory = (task, description, group, dueDate, priority, id) => {
+const taskFactory = (
+  task,
+  description,
+  group,
+  dueDate,
+  priority,
+  isComplete,
+  id
+) => {
   let expandDescription = false;
-  let isComplete = false;
 
   return {
     task,
@@ -40,9 +47,8 @@ const taskController = (() => {
 
   const addTask = () => {
     const taskFormData = displayController.getTaskForm(event);
-    let expandDescription = false;
-    let isComplete = false;
-    let id = 0 + taskList.length;
+    const isComplete = false;
+    const id = 0 + taskList.length;
 
     saveTask(
       taskFormData.task,
@@ -51,7 +57,6 @@ const taskController = (() => {
       taskFormData.dueDate,
       taskFormData.priority,
       isComplete,
-      expandDescription,
       id
     );
 
@@ -62,7 +67,8 @@ const taskController = (() => {
         taskFormData.group,
         taskFormData.dueDate,
         taskFormData.priority,
-        taskFormData.id
+        taskFormData.id,
+        isComplete
       )
     );
 
@@ -88,6 +94,7 @@ const taskController = (() => {
     const id = event.target.parentElement.parentElement.parentElement.id;
     taskList.splice(id, 1, "");
     displayController.deleteElement(id);
+    deleteTaskFromFirebase(id);
   };
 
   const deleteGroup = (event) => {
@@ -502,17 +509,27 @@ function initFirebaseAuth() {
   firebase.auth().onAuthStateChanged(authStateObserver);
 }
 
-const saveTask = (task, description, group, dueDate, priority, id) => {
+const saveTask = (
+  task,
+  description,
+  group,
+  dueDate,
+  priority,
+  isComplete,
+  id
+) => {
   console.log("Saving task to database");
   return db
     .collection("tasks")
-    .add({
+    .doc(id.toString())
+    .set({
       task: task,
       description: description,
       group: group,
       dueDate: dueDate,
       priority: priority,
-      id: id,
+      isComplete,
+      id,
     })
     .then((docRef) => {
       console.log("Document written with ID: ", docRef.id);
@@ -538,6 +555,7 @@ async function loadTasks() {
             taskData.group,
             taskData.dueDate,
             taskData.priority,
+            taskData.isComplete,
             taskData.id
           )
         );
@@ -548,12 +566,12 @@ async function loadTasks() {
   console.log("tasks loaded");
 }
 
-const deleteTask = (task) => {
+const deleteTaskFromFirebase = (id) => {
   db.collection("tasks")
-    .doc("DC")
+    .doc(id.toString())
     .delete()
     .then(() => {
-      console.log("Document successfully deleted!");
+      console.log(`Document ${id} successfully deleted!`);
     })
     .catch((error) => {
       console.error("Error removing document: ", error);
